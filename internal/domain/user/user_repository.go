@@ -1,4 +1,4 @@
-package user
+package domain
 
 type UserRepository interface {
 	Save(user *User) error
