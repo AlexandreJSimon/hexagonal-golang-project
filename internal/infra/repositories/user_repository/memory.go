@@ -4,7 +4,7 @@ import (
 	"errors"
 	"slices"
 
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
+	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
 )
 
 type MemoryRepository struct{}

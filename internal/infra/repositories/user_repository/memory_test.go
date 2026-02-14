@@ -3,7 +3,8 @@ package user_repository_test
 import (
 	"testing"
 
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
+	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/port"
+	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
 	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/infra/repositories/user_repository"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -16,7 +17,7 @@ func TestUserRepository(t *testing.T) {
 
 var _ = Describe("Test suite for testing User Memory Repository behaviors", func() {
 
-	var userRepo domain.UserRepository
+	var userRepo port.UserRepository
 
 	BeforeEach(func() {
 		userRepo = user_repository.NewMemoryRepository()

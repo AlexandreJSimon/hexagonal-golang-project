@@ -3,7 +3,8 @@ package user_service
 import (
 	"context"
 
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
+	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/port"
+	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
 )
 
 type UserServiceProvider interface {
@@ -16,11 +17,11 @@ type UserServiceProvider interface {
 }
 
 type UserServiceInput struct {
-	UserRepository domain.UserRepository
+	UserRepository port.UserRepository
 }
 
 type UserService struct {
-	userRepository domain.UserRepository
+	userRepository port.UserRepository
 }
 
 func NewUserService(userServiceInput UserServiceInput) *UserService {
