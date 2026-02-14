@@ -14,7 +14,7 @@ import (
 	reflect "reflect"
 
 	user_service "github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/services/user_service"
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
+	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
 	gomock "go.uber.org/mock/gomock"
 )
 

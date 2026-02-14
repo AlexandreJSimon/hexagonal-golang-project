@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 
 	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/services/user_service"
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
+	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
 	"github.com/AlexandreJSimon/hexagonal-golang-project/mocks"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
