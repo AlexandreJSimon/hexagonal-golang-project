@@ -1,9 +1,16 @@
+include .env
+export
+MOCKGEN = mockgen
+
 api:
 	go run ./cmd/api/main.go
 
+debug:
+	go run ./cmd/debug/main.go
+
 mocks:
-	go run go.uber.org/mock/mockgen@latest -destination=mocks/user_service_mock.go -package=mocks ./internal/application/services/user_service UserServiceProvider
-	go run go.uber.org/mock/mockgen@latest -destination=mocks/user_repository_mock.go -package=mocks ./internal/application/port UserRepository
+	$(MOCKGEN) -destination=mocks/user_service_mock.go -package=mocks github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/user UserServiceProvider
+	$(MOCKGEN) -destination=mocks/user_repository_mock.go -package=mocks github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user UserRepository
 
 test: mocks
 	go test -v -race -cover ./...

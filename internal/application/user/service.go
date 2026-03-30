@@ -1,27 +1,22 @@
-package user_service
+package user
 
 import (
 	"context"
 
-	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/port"
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
+	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
 )
 
 type UserServiceProvider interface {
 	CreateUser(context.Context, CreateUserInput) (string, error)
-	ListUsers(context.Context, int, int) ([]*domain.User, error)
-	GetUserByID(context.Context, string) (*domain.User, error)
-	UpdateUser(context.Context, string, UpdateUserInput) error
-	DeleteUser(context.Context, string) error
-	CountUsers(context.Context) (int, error)
+	ListUsers(context.Context, int, int) ([]*user.User, error)
 }
 
 type UserServiceInput struct {
-	UserRepository port.UserRepository
+	UserRepository user.UserRepository
 }
 
 type UserService struct {
-	userRepository port.UserRepository
+	userRepository user.UserRepository
 }
 
 func NewUserService(userServiceInput UserServiceInput) *UserService {
@@ -31,7 +26,7 @@ func NewUserService(userServiceInput UserServiceInput) *UserService {
 }
 
 func (s *UserService) CreateUser(ctx context.Context, input CreateUserInput) (string, error) {
-	user := domain.NewUser(
+	user := user.NewUser(
 		input.Name,
 		input.Username,
 		input.Email,
@@ -45,7 +40,7 @@ func (s *UserService) CreateUser(ctx context.Context, input CreateUserInput) (st
 	return user.ID, nil
 }
 
-func (s *UserService) ListUsers(ctx context.Context, limit, offset int) ([]*domain.User, error) {
+func (s *UserService) ListUsers(ctx context.Context, limit, offset int) ([]*user.User, error) {
 	users, err := s.userRepository.List(limit, offset)
 	if err != nil {
 		return nil, err
@@ -54,7 +49,7 @@ func (s *UserService) ListUsers(ctx context.Context, limit, offset int) ([]*doma
 	return users, nil
 }
 
-func (s *UserService) GetUserByID(ctx context.Context, id string) (*domain.User, error) {
+func (s *UserService) GetUserByID(ctx context.Context, id string) (*user.User, error) {
 	user, err := s.userRepository.GetByID(id)
 	if err != nil {
 		return nil, err

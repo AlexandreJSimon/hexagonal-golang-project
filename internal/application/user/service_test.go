@@ -1,12 +1,12 @@
-package user_service_test
+package user_test
 
 import (
 	"context"
 	"errors"
 	"testing"
 
-	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/services/user_service"
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
+	userApp "github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/user"
+	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
 	"github.com/AlexandreJSimon/hexagonal-golang-project/mocks"
 	"go.uber.org/mock/gomock"
 
@@ -22,7 +22,7 @@ func TestUserService(t *testing.T) {
 var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 	var userRepoMock *mocks.MockUserRepository
-	var userService *user_service.UserService
+	var userService *userApp.UserService
 
 	fakeName := "Fake User"
 	fakeUsername := "fakeUser"
@@ -34,7 +34,7 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 		defer mockCtrl.Finish()
 
 		userRepoMock = mocks.NewMockUserRepository(mockCtrl)
-		userService = user_service.NewUserService(user_service.UserServiceInput{
+		userService = userApp.NewUserService(userApp.UserServiceInput{
 			UserRepository: userRepoMock,
 		})
 
@@ -48,17 +48,17 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 				// Arrange
 
-				input := user_service.CreateUserInput{
+				input := userApp.CreateUserInput{
 					Name:     fakeName,
 					Username: fakeUsername,
 					Email:    fakeUserEmail,
 					Password: fakeUserPassword,
 				}
 
-				var savedUser *domain.User
+				var savedUser *user.User
 				userRepoMock.EXPECT().
 					Save(gomock.Any()).
-					DoAndReturn(func(u *domain.User) error {
+					DoAndReturn(func(u *user.User) error {
 						savedUser = u
 						return nil
 					})
@@ -75,8 +75,8 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 				Expect(savedUser.Username).To(Equal(input.Username))
 				Expect(savedUser.Email).To(Equal(input.Email))
 				Expect(savedUser.Password).To(Equal(input.Password))
-				Expect(savedUser.Role).To(Equal(domain.Viewer))
-				Expect(savedUser.Status).To(Equal(domain.Active))
+				Expect(savedUser.Role).To(Equal(user.Viewer))
+				Expect(savedUser.Status).To(Equal(user.Active))
 
 				Expect(savedUser.ID).NotTo(BeEmpty())
 				Expect(savedUser.CreatedAt).NotTo(BeZero())
@@ -86,7 +86,7 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 			It("should return an error when saving user fails", func() {
 				// Arrange
 
-				input := user_service.CreateUserInput{
+				input := userApp.CreateUserInput{
 					Name:     fakeName,
 					Username: fakeUsername,
 					Email:    fakeUserEmail,
@@ -114,10 +114,10 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 				// Arrange
 
-				fakeUsers := []*domain.User{
-					domain.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword),
-					domain.NewUser("Fake User 2", "fakeUser2", "fakeUser2@email.com", "fakePassword2"),
-					domain.NewUser("Fake User 3", "fakeUser3", "fakeUser3@email.com", "fakePassword3"),
+				fakeUsers := []*user.User{
+					user.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword),
+					user.NewUser("Fake User 2", "fakeUser2", "fakeUser2@email.com", "fakePassword2"),
+					user.NewUser("Fake User 3", "fakeUser3", "fakeUser3@email.com", "fakePassword3"),
 				}
 
 				userRepoMock.EXPECT().
@@ -160,7 +160,7 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 				// Arrange
 
-				fakeUser := domain.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
+				fakeUser := user.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
 				userRepoMock.EXPECT().
 					GetByID(fakeUser.ID).
 					Return(fakeUser, nil)
@@ -201,16 +201,16 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 				// Arrange
 
-				fakeUser := domain.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
+				fakeUser := user.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
 
-				updateInput := user_service.UpdateUserInput{
+				updateInput := userApp.UpdateUserInput{
 					Name:     "Updated Name",
 					Username: "updatedUsername",
 					Email:    "updatedEmail@email.com",
 					Password: "newPassword",
 				}
 
-				fakeUserUpdated := &domain.User{
+				fakeUserUpdated := &user.User{
 					ID:        fakeUser.ID,
 					Name:      updateInput.Name,
 					Username:  updateInput.Username,
@@ -243,7 +243,7 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 				// Arrange
 
-				updateInput := user_service.UpdateUserInput{
+				updateInput := userApp.UpdateUserInput{
 					Name:     "Updated Name",
 					Username: "updatedUsername",
 					Email:    "updatedEmail@email.com",
@@ -267,16 +267,16 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 				// Arrange
 
-				fakeUser := domain.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
+				fakeUser := user.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
 
-				updateInput := user_service.UpdateUserInput{
+				updateInput := userApp.UpdateUserInput{
 					Name:     "Updated Name",
 					Username: "updatedUsername",
 					Email:    "updatedEmail@email.com",
 					Password: "newPassword",
 				}
 
-				fakeUserUpdated := &domain.User{
+				fakeUserUpdated := &user.User{
 					ID:        fakeUser.ID,
 					Name:      updateInput.Name,
 					Username:  updateInput.Username,
@@ -313,7 +313,7 @@ var _ = Describe("Test suite for testing User Service behaviors", func() {
 
 				// Arrange
 
-				fakeUser := domain.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
+				fakeUser := user.NewUser(fakeName, fakeUsername, fakeUserEmail, fakeUserPassword)
 
 				userRepoMock.EXPECT().
 					Delete(fakeUser.ID).
