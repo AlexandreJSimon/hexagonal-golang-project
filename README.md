@@ -42,6 +42,21 @@ mocks/                      # Generated mocks for testing
 
 ---
 
+## ▶️ Run the API from Dockerfile
+
+### Build image
+First, it is necessary to build the image:
+```bash
+docker build ./ -t hexagonal-golang-api 
+```
+
+### Run the API
+Start the application:
+```bash
+docker run -p 8080:8080 -e PORT=8080 -e ALLOWED_ORIGINS=*  -e JWT_SECRET_KEY=your_secret_key hexagonal-golang-api
+```
+
+---
 ## ⚙️ Makefile Commands
 
 ### Run the API
@@ -53,7 +68,6 @@ Equivalent to:
 ```bash
 go run ./cmd/api/main.go
 ```
-
 ---
 
 ### Generate Mocks
@@ -88,12 +102,13 @@ Equivalent to:
 ```bash
 swag init -g main.go -d ./cmd/api,./internal/infra/http/handlers,./internal/infra/http/dto
 ```
+---
 
-### Login
+## Login
 The login route is responsible for generating a token used for authentication of the other routes. To generate a token, use:
 
 ```curl
-curl -X 'POST' \                                                                            Wed Apr  8 22:24:10 2026
+curl -X 'POST' \ 
           'http://localhost:8080/login' \
           -H 'accept: application/json' \
           -H 'Content-Type: application/json' \
