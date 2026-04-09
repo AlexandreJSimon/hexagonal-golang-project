@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
         - name: hexagonal-golang-api
-          image: hexagonal-golang-api:latest
+          image: hexagonal-golang-api:local
+          imagePullPolicy: Never
           ports:
             - containerPort: 8080
