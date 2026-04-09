@@ -55,8 +55,15 @@ Start the application:
 ```bash
 docker run -p 8080:8080 -e PORT=8080 -e ALLOWED_ORIGINS=*  -e JWT_SECRET_KEY=your_secret_key hexagonal-golang-api
 ```
+---
+
+## Apply Kubernetes Manifests
+```bash
+kubectl apply -f deployment.yaml
+```
 
 ---
+
 ## ⚙️ Makefile Commands
 
 ### Run the API
