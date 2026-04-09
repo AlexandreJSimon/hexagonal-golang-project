@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hexagonal-golang-api
+
+spec:
+  template:
+      spec:
+        containers:
+            - name: hexagonal-golang-api
+              env:
+              - name: PORT
+                value: "8080"
+              - name: JWT_SECRET_KEY
+                value: "1234"
+              - name: ALLOWED_ORIGINS
+                value: "*"

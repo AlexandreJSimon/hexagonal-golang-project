@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hexagonal-golang-api
+  labels:
+    app: hexagonal-golang-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hexagonal-golang-api
+  template:
+    metadata:
+      labels:
+        app: hexagonal-golang-api
+    spec:
+      containers:
+        - name: hexagonal-golang-api
+          image: hexagonal-golang-api:latest
+          ports:
+            - containerPort: 8080
