@@ -4,23 +4,23 @@ import (
 	"errors"
 	"slices"
 
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
+	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
 )
 
 type MemoryRepository struct{}
 
-var users []*domain.User
+var users []*user.User
 
 func NewMemoryRepository() *MemoryRepository {
 	return &MemoryRepository{}
 }
 
-func (mr *MemoryRepository) Save(user *domain.User) error {
+func (mr *MemoryRepository) Save(user *user.User) error {
 	users = append(users, user)
 	return nil
 }
 
-func (mr *MemoryRepository) GetByID(id string) (*domain.User, error) {
+func (mr *MemoryRepository) GetByID(id string) (*user.User, error) {
 	for _, user := range users {
 		if user.ID == id {
 			return user, nil
@@ -30,7 +30,17 @@ func (mr *MemoryRepository) GetByID(id string) (*domain.User, error) {
 	return nil, errors.New("user not found")
 }
 
-func (mr *MemoryRepository) Update(user *domain.User) error {
+func (mr *MemoryRepository) GetByEmail(email string) (*user.User, error) {
+	for _, user := range users {
+		if user.Email == email {
+			return user, nil
+		}
+	}
+
+	return nil, errors.New("user not found")
+}
+
+func (mr *MemoryRepository) Update(user *user.User) error {
 	for i, u := range users {
 		if u.ID == user.ID {
 			users[i] = user
@@ -51,7 +61,7 @@ func (mr *MemoryRepository) Delete(id string) error {
 	return errors.New("user not found")
 }
 
-func (mr *MemoryRepository) List(limit, offset int) ([]*domain.User, error) {
+func (mr *MemoryRepository) List(limit, offset int) ([]*user.User, error) {
 	return users, nil
 }
 

@@ -65,12 +65,6 @@ This will generate:
 - `mocks/user_service_mock.go`
 - `mocks/user_repository_mock.go`
 
-Manual command example:
-```bash
-go run go.uber.org/mock/mockgen@latest -destination=mocks/user_service_mock.go -package=mocks ./internal/application/services/user_service UserServiceProvider
-go run go.uber.org/mock/mockgen@latest -destination=mocks/user_repository_mock.go -package=mocks ./internal/domain/user UserRepository
-```
-
 ---
 
 ### Run Tests
@@ -92,7 +86,21 @@ make swagger
 ```
 Equivalent to:
 ```bash
-swag init -g main.go -d ./cmd/api,./internal/infra/api/handlers,./internal/infra/api/dto
+swag init -g main.go -d ./cmd/api,./internal/infra/http/handlers,./internal/infra/http/dto
+```
+
+### Login
+The login route is responsible for generating a token used for authentication of the other routes. To generate a token, use:
+
+```curl
+curl -X 'POST' \                                                                            Wed Apr  8 22:24:10 2026
+          'http://localhost:8080/login' \
+          -H 'accept: application/json' \
+          -H 'Content-Type: application/json' \
+          -d '{
+      "password": "admin",
+      "email": "admin@email.com"
+    }'
 ```
 
 ---
@@ -101,7 +109,7 @@ swag init -g main.go -d ./cmd/api,./internal/infra/api/handlers,./internal/infra
 
 - All interfaces and services should follow **dependency inversion** principles.
 - Mocks are automatically regenerated before running tests.
-- Swagger configuration assumes handlers and DTOs are under `internal/infra/api/`.
+- Swagger configuration assumes handlers and DTOs are under `internal/infra/http/`.
 
 ---
 

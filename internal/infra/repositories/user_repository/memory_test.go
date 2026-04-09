@@ -3,8 +3,7 @@ package user_repository_test
 import (
 	"testing"
 
-	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/port"
-	domain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain"
+	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
 	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/infra/repositories/user_repository"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -17,7 +16,7 @@ func TestUserRepository(t *testing.T) {
 
 var _ = Describe("Test suite for testing User Memory Repository behaviors", func() {
 
-	var userRepo port.UserRepository
+	var userRepo user.UserRepository
 
 	BeforeEach(func() {
 		userRepo = user_repository.NewMemoryRepository()
@@ -31,7 +30,7 @@ var _ = Describe("Test suite for testing User Memory Repository behaviors", func
 
 				// Arrange
 
-				user := domain.NewUser("John Doe", "johndoe", "johndoe@example.com", "password123")
+				user := user.NewUser("John Doe", "johndoe", "johndoe@example.com", "password123")
 
 				// Act
 
@@ -53,7 +52,7 @@ var _ = Describe("Test suite for testing User Memory Repository behaviors", func
 
 				// Arrange
 
-				user := domain.NewUser("New John Doe", "newjohndoe", "newjohndoe@example.com", "newpassword123")
+				user := user.NewUser("New John Doe", "newjohndoe", "newjohndoe@example.com", "newpassword123")
 				userRepo.Save(user)
 
 				// Act
@@ -75,7 +74,7 @@ var _ = Describe("Test suite for testing User Memory Repository behaviors", func
 
 				// Arrange
 
-				user := domain.NewUser("Jane Smith", "janesmith", "janesmith@example.com", "securepass456")
+				user := user.NewUser("Jane Smith", "janesmith", "janesmith@example.com", "securepass456")
 				userRepo.Save(user)
 				user.Name = "Jane Doe"
 				user.Username = "janedoe"
@@ -100,7 +99,7 @@ var _ = Describe("Test suite for testing User Memory Repository behaviors", func
 
 				// Arrange
 
-				user := domain.NewUser("Alice Johnson", "alicej", "alicej@example.com", "mypassword789")
+				user := user.NewUser("Alice Johnson", "alicej", "alicej@example.com", "mypassword789")
 				userRepo.Save(user)
 
 				// Act
@@ -122,12 +121,12 @@ var _ = Describe("Test suite for testing User Memory Repository behaviors", func
 
 				// Arrange
 
-				var users []*domain.User
+				var users []*user.User
 
-				users = append(users, domain.NewUser("Bob Brown", "bobb", "bobb@example.com", "randompass123"))
+				users = append(users, user.NewUser("Bob Brown", "bobb", "bobb@example.com", "randompass123"))
 				userRepo.Save(users[0])
 
-				users = append(users, domain.NewUser("Charlie Green", "charlieg", "charlieg@example.com", "securepass789"))
+				users = append(users, user.NewUser("Charlie Green", "charlieg", "charlieg@example.com", "securepass789"))
 				userRepo.Save(users[1])
 
 				// Act
@@ -151,15 +150,15 @@ var _ = Describe("Test suite for testing User Memory Repository behaviors", func
 
 				// Arrange
 
-				var users []*domain.User
+				var users []*user.User
 
-				users = append(users, domain.NewUser("Bob Brown", "bobb", "bobb@example.com", "randompass123"))
+				users = append(users, user.NewUser("Bob Brown", "bobb", "bobb@example.com", "randompass123"))
 				userRepo.Save(users[0])
 
-				users = append(users, domain.NewUser("Charlie Green", "charlieg", "charlieg@example.com", "securepass789"))
+				users = append(users, user.NewUser("Charlie Green", "charlieg", "charlieg@example.com", "securepass789"))
 				userRepo.Save(users[1])
 
-				users = append(users, domain.NewUser("Diana Prince", "dianap", "dianap@example.com", "wonderpass456"))
+				users = append(users, user.NewUser("Diana Prince", "dianap", "dianap@example.com", "wonderpass456"))
 				userRepo.Save(users[2])
 
 				// Act
