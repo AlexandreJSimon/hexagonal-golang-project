@@ -59,7 +59,7 @@ docker run -p 8080:8080 -e PORT=8080 -e ALLOWED_ORIGINS=*  -e JWT_SECRET_KEY=you
 
 ## Apply Kubernetes Manifests
 ```bash
-kubectl apply -f deployment.yaml
+kubectl apply -k k8s/overlays/dev/
 ```
 
 ---
