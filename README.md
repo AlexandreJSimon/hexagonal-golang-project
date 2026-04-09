@@ -89,6 +89,20 @@ Equivalent to:
 swag init -g main.go -d ./cmd/api,./internal/infra/http/handlers,./internal/infra/http/dto
 ```
 
+### Login
+The login route is responsible for generating a token used for authentication of the other routes. To generate a token, use:
+
+```curl
+curl -X 'POST' \                                                                            Wed Apr  8 22:24:10 2026
+          'http://localhost:8080/login' \
+          -H 'accept: application/json' \
+          -H 'Content-Type: application/json' \
+          -d '{
+      "password": "admin",
+      "email": "admin@email.com"
+    }'
+```
+
 ---
 
 ## 📘 Notes
