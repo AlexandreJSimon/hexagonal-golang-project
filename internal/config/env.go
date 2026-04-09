@@ -7,11 +7,15 @@ import (
 
 type Env struct {
 	JWTSecretKey string
+	Port         int
+	AllawOrigins string
 }
 
 func Load() *Env {
 	return &Env{
 		JWTSecretKey: MustGetString("JWT_SECRET_KEY"),
+		Port:         GetInt("PORT", 8080),
+		AllawOrigins: MustGetString("ALLOWED_ORIGINS"),
 	}
 }
 

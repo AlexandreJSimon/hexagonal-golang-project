@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -62,10 +63,10 @@ func main() {
 		mux.HandleFunc("GET /users", userHandler.List)
 	}, middleware.Authentication(tokenService))
 
-	handler := middleware.Chain(middleware.CORS())(mux)
+	handler := middleware.Chain(middleware.CORS(env.AllawOrigins))(mux)
 
 	server := &http.Server{
-		Addr:         ":8080",
+		Addr:         fmt.Sprintf(":%d", env.Port),
 		Handler:      handler,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
