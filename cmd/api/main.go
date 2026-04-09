@@ -15,6 +15,7 @@ import (
 	user_handler "github.com/AlexandreJSimon/hexagonal-golang-project/internal/infra/http/handlers/user"
 	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/infra/http/middleware"
 	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/infra/repositories/user_repository"
+	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/infra/security"
 	"github.com/AlexandreJSimon/hexagonal-golang-project/pkg/jwt"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
@@ -29,6 +30,9 @@ import (
 
 // @host localhost:8080
 // @BasePath /api/v1
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 
 	env := env.Load()
@@ -42,6 +46,7 @@ func main() {
 
 	userService := userApp.NewUserService(userApp.UserServiceInput{
 		UserRepository: userRepository,
+		PasswordHasher: security.BcryptHasher{},
 	})
 
 	userHandler := user_handler.NewHandler(userService)
@@ -50,6 +55,7 @@ func main() {
 
 	mux.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 	mux.HandleFunc("/health", healthHandler)
+	mux.HandleFunc("/login", userHandler.Login(tokenService))
 
 	httpx.Group(mux, "/api/v1", func(mux *http.ServeMux) {
 		mux.HandleFunc("POST /users", userHandler.Create)

@@ -16,9 +16,10 @@ import (
 // @Produce json
 // @Param limit query int true "Number of users to return"
 // @Param offset query int true "Number of users to skip"
-// @Success 201 {object} []api_dto.UserResponse
+// @Success 200 {object} []http_dto.UserResponse
 // @Failure 400 {object} map[string]string
 // @Router /users [get]
+// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	var limit, offset int
 

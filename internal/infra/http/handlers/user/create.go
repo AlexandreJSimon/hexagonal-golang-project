@@ -15,10 +15,11 @@ import (
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param user body api_dto.CreateUserRequest true "User to create"
-// @Success 201 {object} api_dto.UserResponse
+// @Param user body http_dto.CreateUserRequest true "User to create"
+// @Success 201 {object} http_dto.UserResponse
 // @Failure 400 {object} map[string]string
 // @Router /users [post]
+// @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var user http_dto.CreateUserRequest
 

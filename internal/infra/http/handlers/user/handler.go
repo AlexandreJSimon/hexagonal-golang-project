@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"net/http"
 
 	userApp "github.com/AlexandreJSimon/hexagonal-golang-project/internal/application/user"
 	userDomain "github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
@@ -14,7 +15,14 @@ type UserServiceProvider interface {
 	UpdateUser(context.Context, string, userApp.UpdateUserInput) error
 	DeleteUser(context.Context, string) error
 	CountUsers(context.Context) (int, error)
+	LoginUser(context.Context, string, string) (*userDomain.User, error)
 }
+
+type TokenService interface {
+	Generate(uid string) (string, error)
+}
+
+type HandlerFunc func(http.ResponseWriter, *http.Request)
 
 type Handler struct {
 	userService UserServiceProvider

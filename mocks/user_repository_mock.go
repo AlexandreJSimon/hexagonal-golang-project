@@ -68,6 +68,21 @@ func (mr *MockUserRepositoryMockRecorder) Delete(arg0 any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockUserRepository)(nil).Delete), arg0)
 }
 
+// GetByEmail mocks base method.
+func (m *MockUserRepository) GetByEmail(arg0 string) (*user.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByEmail", arg0)
+	ret0, _ := ret[0].(*user.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByEmail indicates an expected call of GetByEmail.
+func (mr *MockUserRepositoryMockRecorder) GetByEmail(arg0 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByEmail", reflect.TypeOf((*MockUserRepository)(nil).GetByEmail), arg0)
+}
+
 // GetByID mocks base method.
 func (m *MockUserRepository) GetByID(arg0 string) (*user.User, error) {
 	m.ctrl.T.Helper()

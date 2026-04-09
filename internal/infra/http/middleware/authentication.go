@@ -29,8 +29,6 @@ func Authentication(tokenService TokenService) MiddlewareFunc {
 				return
 			}
 
-			// ctx := WithUser(r.Context(), claims)
-
 			next.ServeHTTP(w, r.WithContext(r.Context()))
 		})
 	}

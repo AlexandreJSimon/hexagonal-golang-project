@@ -2,35 +2,39 @@ package user
 
 import (
 	"context"
+	"errors"
 
 	"github.com/AlexandreJSimon/hexagonal-golang-project/internal/domain/user"
 )
 
-type UserServiceProvider interface {
-	CreateUser(context.Context, CreateUserInput) (string, error)
-	ListUsers(context.Context, int, int) ([]*user.User, error)
-}
-
 type UserServiceInput struct {
 	UserRepository user.UserRepository
+	PasswordHasher user.PasswordHasher
 }
 
 type UserService struct {
 	userRepository user.UserRepository
+	passwordHasher user.PasswordHasher
 }
 
 func NewUserService(userServiceInput UserServiceInput) *UserService {
 	return &UserService{
 		userRepository: userServiceInput.UserRepository,
+		passwordHasher: userServiceInput.PasswordHasher,
 	}
 }
 
 func (s *UserService) CreateUser(ctx context.Context, input CreateUserInput) (string, error) {
+	pwd, err := s.passwordHasher.Hash(input.Password)
+	if err != nil {
+		return "", err
+	}
+
 	user := user.NewUser(
 		input.Name,
 		input.Username,
 		input.Email,
-		input.Password,
+		pwd,
 	)
 
 	if err := s.userRepository.Save(user); err != nil {
@@ -59,6 +63,10 @@ func (s *UserService) GetUserByID(ctx context.Context, id string) (*user.User, e
 }
 
 func (s *UserService) UpdateUser(ctx context.Context, id string, input UpdateUserInput) error {
+	pwd, err := s.passwordHasher.Hash(input.Password)
+	if err != nil {
+		return err
+	}
 
 	user, err := s.userRepository.GetByID(id)
 	if err != nil {
@@ -69,7 +77,7 @@ func (s *UserService) UpdateUser(ctx context.Context, id string, input UpdateUse
 	user.Name = input.Name
 	user.Username = input.Username
 	user.Email = input.Email
-	user.Password = input.Password
+	user.Password = pwd
 
 	if err := s.userRepository.Update(user); err != nil {
 		return err
@@ -93,4 +101,17 @@ func (s *UserService) CountUsers(ctx context.Context) (int, error) {
 	}
 
 	return count, nil
+}
+
+func (s *UserService) LoginUser(ctx context.Context, email, password string) (*user.User, error) {
+	user, err := s.userRepository.GetByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	if !s.passwordHasher.Compare(password, user.Password) {
+		return nil, errors.New("invalid credentials")
+	}
+
+	return user, nil
 }

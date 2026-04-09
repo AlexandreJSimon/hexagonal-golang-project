@@ -18,7 +18,7 @@ func Group(
 
 	var handler http.Handler = subMux
 
-	middleware.Chain(middlewares...)(handler)
+	handler = middleware.Chain(middlewares...)(handler)
 
 	parent.Handle(prefix+"/", http.StripPrefix(prefix, handler))
 }

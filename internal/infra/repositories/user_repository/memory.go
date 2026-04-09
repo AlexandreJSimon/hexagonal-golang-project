@@ -30,6 +30,16 @@ func (mr *MemoryRepository) GetByID(id string) (*user.User, error) {
 	return nil, errors.New("user not found")
 }
 
+func (mr *MemoryRepository) GetByEmail(email string) (*user.User, error) {
+	for _, user := range users {
+		if user.Email == email {
+			return user, nil
+		}
+	}
+
+	return nil, errors.New("user not found")
+}
+
 func (mr *MemoryRepository) Update(user *user.User) error {
 	for i, u := range users {
 		if u.ID == user.ID {

@@ -3,7 +3,6 @@ package middleware
 import "net/http"
 
 type TokenService interface {
-	Generate(uid string) (string, error)
 	Validate(tokenString string) (string, error)
 }
 
